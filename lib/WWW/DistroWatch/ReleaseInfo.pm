@@ -72,7 +72,8 @@ sub get_distro_releases_info {
     $table->find("tr")->each(
         sub {
             my $row = shift;
-            push @table, $row->find("td,th")->map(sub { [$_->to_string,$_->text] })->to_array;
+            push @table, $row->find("td,th")->map(
+                sub { [$_->to_string,$_->text] })->to_array;
         }
     );
     #use DD; dd \@table;
