@@ -19,8 +19,8 @@ $SPEC{get_distro_releases_info} = {
     summary => "Get information about a distro's releases",
     description => <<'_',
 
-This routine scrapes http://distrowatch.com/table.php?distribution=<NAME> and
-return a data structure like follows:
+This routine scrapes `http://distrowatch.com/table.php?distribution=<NAME>` and
+returns a data structure like the following:
 
     [
         {
@@ -81,7 +81,7 @@ sub get_distro_releases_info {
     for my $i (1..$#{$table[0]}-1) {
         $relcolnums{$table[0][$i][1]} = $i;
     }
-    use DD; dd \%relcolnums;
+    #use DD; dd \%relcolnums;
 
     my %fieldrownums; # key=field name, val=row index
     for my $i (1..$#table) {
@@ -96,7 +96,7 @@ sub get_distro_releases_info {
             $fieldrownums{"${software}_version"} = $i;
         }
     }
-    use DD; dd \%fieldrownums;
+    #use DD; dd \%fieldrownums;
 
     my @rels;
     for my $relname (sort {$relcolnums{$b}<=>$relcolnums{$a}}
