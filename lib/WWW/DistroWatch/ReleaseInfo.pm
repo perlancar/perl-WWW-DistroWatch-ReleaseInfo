@@ -44,6 +44,11 @@ _
             req => 1,
             pos => 0,
         },
+        file => {
+            schema => 'str*',
+            summary => "Instead of retrieving page from distrowatch.com, use this file's content",
+            tags => ['category:testing'],
+        },
     },
 };
 sub get_distro_releases_info {
@@ -57,12 +62,20 @@ sub get_distro_releases_info {
     if ($args{file}) {
         {
             local $/;
-            open my($fh), "<", $args{file} or die $!;
+            open my($fh), "<", $args{file}
+                or return [500, "Can't read file '$args{file}': $!"];
             $html = <$fh>;
         }
     } else {
-        $html = $ua->get("http://distrowatch.com/table.php?distribution=".
-                             $args{distribution})->res->body;
+        my $url = "http://distrowatch.com/table.php?distribution=".
+            $args{distribution};
+        my $tx = $ua->get($url);
+        unless ($tx->success) {
+            my $err = $tx->error;
+            return [500, "Can't retrieve URL '$url': ".
+                        "$err->{code} - $err->{message}"];
+        }
+        $html = $tx->res->body;
     }
 
     my $dom  = Mojo::DOM->new($html);
