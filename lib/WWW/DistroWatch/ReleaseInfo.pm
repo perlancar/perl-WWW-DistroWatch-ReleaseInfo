@@ -84,6 +84,13 @@ sub get_distro_releases_info {
     }
     #use DD; dd \%relcolnums;
 
+    my %fieldindexes = ( # key=field name, val=column index in result
+        release_name => 0,
+        release_date => 1,
+        eol_date     => 2,
+    );
+    my $j = 3;
+
     my %fieldrownums; # key=field name, val=row index
     for my $i (1..$#table) {
         my ($chtml, $ctext) = @{ $table[$i][0] };
@@ -95,6 +102,7 @@ sub get_distro_releases_info {
             my $software = lc($1);
             $software =~ s/\W+/_/g;
             $fieldrownums{"${software}_version"} = $i;
+            $fieldindexes{"${software}_version"} = $j++;
         }
     }
     #use DD; dd \%fieldrownums;
@@ -111,7 +119,9 @@ sub get_distro_releases_info {
         push @rels, $rel;
     }
 
-    [200, "OK", \@rels];
+    [200, "OK", \@rels, {
+        'table.fields'=>[sort{$fieldindexes{$a}<=>$fieldindexes{$b}} keys %fieldindexes],
+    }];
 }
 
 1;
