@@ -1,5 +1,15 @@
 Revision history for WWW-DistroWatch-ReleaseInfo
 
+0.03    2015-10-06 (PERLANCAR)
+
+	- Add functions: list_distros, list_distros_cached.
+
+	- [ux] Return error response instead of dying when: 1) file/URL retrieve
+          fails; 2) page says that distro does not exist.
+
+	- Document the 'file' argument.
+
+
 0.02    2015-10-06 (PERLANCAR)
 
 	- Add table.fields result metadata for nicer table output
