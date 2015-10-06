@@ -1,5 +1,11 @@
 Revision history for WWW-DistroWatch-ReleaseInfo
 
+0.04    2015-10-06 (PERLANCAR)
+
+        - Rebuild with updated data from gudangdata-distrowatch (fix encoding
+          problem).
+
+
 0.03    2015-10-06 (PERLANCAR)
 
 	- Add functions: list_distros, list_distros_cached.
