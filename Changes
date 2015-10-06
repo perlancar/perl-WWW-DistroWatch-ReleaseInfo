@@ -1,5 +1,11 @@
 Revision history for WWW-DistroWatch-ReleaseInfo
 
+0.02    2015-10-06 (PERLANCAR)
+
+	- Add table.fields result metadata for nicer table output
+	  (appropriate column order).
+
+
 0.01    2015-10-04 (PERLANCAR)
 
         - First early release.
