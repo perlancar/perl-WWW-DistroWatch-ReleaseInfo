@@ -68,6 +68,8 @@ sub list_distros {
 }
 
 our $distros = do {
+    no warnings 'void';
+    {};
 # CODE: { require File::Slurper; require JSON; my $json = JSON->new; $json->decode(File::Slurper::read_text("../gudangdata-distrowatch/table/distro/data.json")); }
 };
 
@@ -110,6 +112,13 @@ _
             summary => 'Name of distribution, e.g. "mint", "ubuntu", "debian"',
             req => 1,
             pos => 0,
+            completion => sub {
+                require Complete::Util;
+                my %args = @_;
+                Complete::Util::complete_array_elem(
+                    word=>$args{word}, array=>[keys %$distros],
+                );
+            },
         },
         %file_args,
     },
