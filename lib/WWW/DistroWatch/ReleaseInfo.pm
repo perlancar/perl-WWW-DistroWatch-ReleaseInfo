@@ -78,6 +78,10 @@ sub get_distro_releases_info {
         $html = $tx->res->body;
     }
 
+    if ($html =~ /The distribution you requested does not exist/) {
+        return [404, "No such distribution: '$args{distribution}'"];
+    }
+
     my $dom  = Mojo::DOM->new($html);
 
     my $table = $dom->find("th.TablesInvert")->[0]->parent->parent;
