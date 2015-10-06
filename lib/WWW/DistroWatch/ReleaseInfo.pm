@@ -10,9 +10,76 @@ use warnings;
 use Exporter 'import';
 our @EXPORT_OK = qw(
                        get_distro_releases_info
+                       list_distros
+                       list_distros_cached
                );
 
 our %SPEC;
+
+my %file_args = (
+    file => {
+        schema => 'str*',
+        summary => "Instead of retrieving page from distrowatch.com, use this file's content",
+        tags => ['category:testing'],
+    },
+);
+
+$SPEC{list_distros} = {
+    v => 1.1,
+    summary => "List all known distros",
+    args => {
+        %file_args,
+    },
+};
+sub list_distros {
+    require Mojo::DOM;
+    require Mojo::UserAgent;
+
+    my %args = @_;
+
+    my $ua   = Mojo::UserAgent->new;
+    my $html;
+    if ($args{file}) {
+        {
+            local $/;
+            open my($fh), "<", $args{file}
+                or return [500, "Can't read file '$args{file}': $!"];
+            $html = <$fh>;
+        }
+    } else {
+        my $url = "http://distrowatch.com/";
+        my $tx = $ua->get($url);
+        unless ($tx->success) {
+            my $err = $tx->error;
+            return [500, "Can't retrieve URL '$url': ".
+                        "$err->{code} - $err->{message}"];
+        }
+        $html = $tx->res->body;
+    }
+
+    my $dom  = Mojo::DOM->new($html);
+    my $distros = {};
+    $dom->find("select[name=distribution] option")->each(
+        sub {
+            $distros->{ $_->attr("value") } = $_->text;
+        }
+    );
+    [200, "OK", $distros];
+}
+
+our $distros = do {
+# CODE: { require File::Slurper; require JSON; my $json = JSON->new; $json->decode(File::Slurper::read_text("../gudangdata-distrowatch/table/distro/data.json")); }
+};
+
+$SPEC{list_distros_cached} = {
+    v => 1.1,
+    summary => "List all known distros (cached data)",
+    args => {
+    },
+};
+sub list_distros_cached {
+    [200, "OK", $distros];
+}
 
 $SPEC{get_distro_releases_info} = {
     v => 1.1,
@@ -44,11 +111,7 @@ _
             req => 1,
             pos => 0,
         },
-        file => {
-            schema => 'str*',
-            summary => "Instead of retrieving page from distrowatch.com, use this file's content",
-            tags => ['category:testing'],
-        },
+        %file_args,
     },
 };
 sub get_distro_releases_info {
