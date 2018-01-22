@@ -47,7 +47,7 @@ sub list_distros {
             $html = <$fh>;
         }
     } else {
-        my $url = "http://distrowatch.com/";
+        my $url = "https://distrowatch.com/";
         my $tx = $ua->get($url);
         unless ($tx->success) {
             my $err = $tx->error;
