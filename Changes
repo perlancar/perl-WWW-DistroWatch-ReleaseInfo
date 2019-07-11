@@ -1,21 +1,21 @@
-0.06    2018-01-22 (PERLANCAR)
+0.06    2018-01-22  Released-By: PERLANCAR
 
 	- [Bugfix] Update URL to https:// (otherwise the routines get empty
 	  data) [GH#1].
 
 
-0.05    2015-10-06 (PERLANCAR)
+0.05    2015-10-06  Released-By: PERLANCAR
 
 	- [ux] Add completion for distribution argument.
 
 
-0.04    2015-10-06 (PERLANCAR)
+0.04    2015-10-06  Released-By: PERLANCAR
 
         - Rebuild with updated data from gudangdata-distrowatch (fix encoding
           problem).
 
 
-0.03    2015-10-06 (PERLANCAR)
+0.03    2015-10-06  Released-By: PERLANCAR
 
 	- Add functions: list_distros, list_distros_cached.
 
@@ -25,12 +25,12 @@
 	- Document the 'file' argument.
 
 
-0.02    2015-10-06 (PERLANCAR)
+0.02    2015-10-06  Released-By: PERLANCAR
 
 	- Add table.fields result metadata for nicer table output
 	  (appropriate column order).
 
 
-0.01    2015-10-04 (PERLANCAR)
+0.01    2015-10-04  Released-By: PERLANCAR
 
         - First early release.
